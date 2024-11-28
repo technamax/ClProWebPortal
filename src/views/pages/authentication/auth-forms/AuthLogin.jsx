@@ -57,7 +57,7 @@ const AuthLogin = ({ ...others }) => {
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
-          <AnimateButton>
+          {/* <AnimateButton>
             <Button
               disableElevation
               fullWidth
@@ -75,9 +75,9 @@ const AuthLogin = ({ ...others }) => {
               </Box>
               Sign in with Google
             </Button>
-          </AnimateButton>
+          </AnimateButton> */}
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Box
             sx={{
               alignItems: 'center',
@@ -106,12 +106,12 @@ const AuthLogin = ({ ...others }) => {
 
             <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
           </Box>
-        </Grid>
-        <Grid item xs={12} container alignItems="center" justifyContent="center">
+        </Grid> */}
+        {/* <Grid item xs={12} container alignItems="center" justifyContent="center">
           <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Sign in with Email address</Typography>
+            <Typography variant="subtitle1">Sign in</Typography>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Formik
@@ -128,7 +128,7 @@ const AuthLogin = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-login">Username</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
