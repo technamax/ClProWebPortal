@@ -2,11 +2,13 @@ import { combineReducers } from 'redux';
 
 // reducer import
 import customizationReducer from './customizationReducer';
+import { specificationApi } from 'redux/apis/specificationApi';
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
-const reducer = combineReducers({
-  customization: customizationReducer
+const rootReducer = combineReducers({
+  customization: customizationReducer,
+  [specificationApi.reducerPath]: specificationApi.reducer // Include the API reducer
 });
 
-export default reducer;
+export default rootReducer;

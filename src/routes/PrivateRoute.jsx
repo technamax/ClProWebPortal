@@ -11,7 +11,7 @@ import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
   const authToken = localStorage.getItem('authToken'); // Check if user is authenticated
-  console.log('localStorage.getItem', localStorage.getItem('authToken')); // Check if the token is set
+  // console.log('localStorage.getItem', localStorage.getItem('authToken')); // Check if the token is set
 
   return authToken ? children : <Navigate to="/login" />;
 };
