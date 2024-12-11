@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 //  *
 import logoDark from 'assets/images/logo-dark.svg';
 import logo from 'assets/images/logo.svg';
-import Technamax from 'assets/images/Technamax.png';
+import AmeerdinLogo from 'assets/images/AmeerdinLogo.png';
 //  *
 
 // ==============================|| LOGO SVG ||============================== //
@@ -18,7 +18,7 @@ const Logo = () => {
     // *
     //  * if you want to use image instead of svg uncomment following, and comment out <svg> element.
     //  *
-    <img src={Technamax} alt="technamax" width="100" />
+    <img src={AmeerdinLogo} alt="AmeerdinLogo" width="100" />
     //  *
 
     // <svg width="92" height="32" viewBox="0 0 92 32" fill="none" xmlns="http://www.w3.org/2000/svg">

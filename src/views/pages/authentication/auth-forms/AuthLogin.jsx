@@ -3,22 +3,21 @@ import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import Divider from '@mui/material/Divider';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-
+import {
+  useMediaQuery,
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Stack,
+  OutlinedInput
+} from '@mui/material';
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -30,12 +29,15 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import Google from 'assets/images/icons/social-google.svg';
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'context/AuthContext';
 // ============================|| FIREBASE - LOGIN ||============================ //
-
+const baseUrl = import.meta.env.VITE_APP_API_BASE_URL;
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const { login, setUser } = useAuth();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
@@ -52,68 +54,61 @@ const AuthLogin = ({ ...others }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleSubmit = async (values, { setErrors }) => {
+    try {
+      const response = await axios.post(`${baseUrl}User/login`, {
+        username: values.email,
+        password: values.password
+      });
+
+      const { success, result } = response.data;
+      if (success) {
+        login(result); // Save authentication state
+        navigate('/'); // Redirect to main route
+        setUser(result);
+        localStorage.setItem('authToken', JSON.stringify(success));
+      } else {
+        setErrors({ submit: 'Invalid username or password' });
+      }
+    } catch (error) {
+      setErrors({ submit: 'Server error. Please try again later.' });
+    }
+  };
+  // const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  //   try {
+  //     const response = await fetch('http://109.199.108.220:85/api/User/login', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         username: values.email,
+  //         password: values.password
+  //       })
+  //     });
+  //     const data = await response.json();
+
+  //     if (data.success) {
+  //       // Save authentication token or flag
+  //       localStorage.setItem('authToken', JSON.stringify(data.result)); // You can store just a flag if you prefer
+  //       login(data.result); // Save authentication state
+  //       navigate('/'); // Redirect to main route
+  //       setUser(data.result);
+  //       // Redirect to the main page
+  //       // window.location.href = '/'; // or use navigation via React Router
+  //     } else {
+  //       setErrors({ submit: data.message });
+  //     }
+  //   } catch (error) {
+  //     setErrors({ submit: 'Login failed. Please try again.' });
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
 
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12}>
-          {/* <AnimateButton>
-            <Button
-              disableElevation
-              fullWidth
-              onClick={googleHandler}
-              size="large"
-              variant="outlined"
-              sx={{
-                color: 'grey.700',
-                backgroundColor: theme.palette.grey[50],
-                borderColor: theme.palette.grey[100]
-              }}
-            >
-              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-                <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
-              </Box>
-              Sign in with Google
-            </Button>
-          </AnimateButton> */}
-        </Grid>
-        {/* <Grid item xs={12}>
-          <Box
-            sx={{
-              alignItems: 'center',
-              display: 'flex'
-            }}
-          >
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-
-            <Button
-              variant="outlined"
-              sx={{
-                cursor: 'unset',
-                m: 2,
-                py: 0.5,
-                px: 7,
-                borderColor: `${theme.palette.grey[100]} !important`,
-                color: `${theme.palette.grey[900]}!important`,
-                fontWeight: 500,
-                borderRadius: `${customization.borderRadius}px`
-              }}
-              disableRipple
-              disabled
-            >
-              OR
-            </Button>
-
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-          </Box>
-        </Grid> */}
-        {/* <Grid item xs={12} container alignItems="center" justifyContent="center">
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Sign in</Typography>
-          </Box>
-        </Grid> */}
+        <Grid item xs={12}></Grid>
       </Grid>
-
       <Formik
         initialValues={{
           email: '',
@@ -121,9 +116,10 @@ const AuthLogin = ({ ...others }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          email: Yup.string().max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
+        onSubmit={handleSubmit}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
@@ -184,16 +180,12 @@ const AuthLogin = ({ ...others }) => {
                 }
                 label="Remember me"
               />
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                Forgot Password?
-              </Typography>
             </Stack>
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
-
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">

@@ -12,6 +12,7 @@ import themes from 'themes';
 
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
+import { AuthProvider } from 'context/AuthContext';
 
 // ==============================|| APP ||============================== //
 
@@ -22,9 +23,11 @@ const App = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
-        <NavigationScroll>
-          <RouterProvider router={router} />
-        </NavigationScroll>
+        <AuthProvider>
+          <NavigationScroll>
+            <RouterProvider router={router} />
+          </NavigationScroll>
+        </AuthProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );
