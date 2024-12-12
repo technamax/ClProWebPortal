@@ -98,15 +98,13 @@ const UsersManagement = () => {
     { id: 7, role: 'Admin', isActive: 'Yes', isMainRole: 'Yes', createdOn: '12/09/2022' }
   ];
   const columns = [
-    { field: 'id', headerName: 'Sr.', width: 80, flex: 1 },
-    { field: 'role', headerName: 'Role Name', width: 150, flex: 1 },
-    { field: 'isActive', headerName: 'Is Active', width: 150, flex: 1 },
-    { field: 'isMainRole', headerName: 'Is Main Role', width: 150, flex: 1 },
+    { field: 'id', headerName: 'Sr.', flex: 0.1 },
+    { field: 'role', headerName: 'Role Name', flex: 1 },
+    { field: 'isActive', headerName: 'Is Active', flex: 1 },
+    { field: 'isMainRole', headerName: 'Is Main Role', flex: 1 },
     {
       field: 'createdOn',
       headerName: 'Created On',
-      width: 150,
-      headerAlign: 'center',
       align: 'center',
       flex: 1
     }
