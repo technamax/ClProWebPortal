@@ -18,8 +18,46 @@ const SubCard = React.forwardRef(
     return (
       <Card ref={ref} sx={{ border: '1px solid', borderColor: 'divider', ':hover': { boxShadow: defaultShadow }, ...sx }} {...others}>
         {/* card header and action */}
-        {!darkTitle && title && <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} />}
-        {darkTitle && title && <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} />}
+        {!darkTitle && title && (
+          <CardHeader
+            sx={{
+              p: 2.5,
+              backgroundColor: (theme) => theme.palette.primary.dark,
+              color: (theme) => theme.palette.getContrastText(theme.palette.primary.dark)
+            }}
+            title={
+              <Typography
+                sx={{
+                  color: 'white' // Ensures text color is explicitly set to white
+                }}
+                variant="h5"
+              >
+                {title}
+              </Typography>
+            }
+            action={secondary}
+          />
+        )}
+        {darkTitle && title && (
+          <CardHeader
+            sx={{
+              p: 2.5,
+              backgroundColor: (theme) => theme.palette.primary.dark,
+              color: (theme) => theme.palette.getContrastText(theme.palette.primary.dark)
+            }}
+            title={
+              <Typography
+                sx={{
+                  color: 'white' // Ensures text color is explicitly set to white
+                }}
+                variant="h4"
+              >
+                {title}
+              </Typography>
+            }
+            action={secondary}
+          />
+        )}
 
         {/* content & header divider */}
         {title && <Divider />}
