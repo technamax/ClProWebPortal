@@ -106,7 +106,7 @@ const UsersManagement = () => {
       field: 'createdOn',
       headerName: 'Created On',
       align: 'center',
-      flex: 1
+      flex: 2
     }
   ];
   // useEffect(() => {
