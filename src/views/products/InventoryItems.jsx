@@ -83,7 +83,8 @@ const InventoryItems = () => {
       setRows(
         product.result.map((row, index) => ({
           id: index + 1,
-          ...row
+          ...row,
+          minStockQty: row.minStockQty + 50 // for testing purposes
         }))
       );
       setBarCodes(product.result.map((row) => row.itemCode).toString());
@@ -155,7 +156,7 @@ const InventoryItems = () => {
         return (
           <span
             style={{
-              color: currentStock < minStockQty ? 'red' : '#32CD32', // Red if less, Green if greater
+              color: currentStock === 0 ? 'red' : currentStock < minStockQty ? '#ed790d' : '#32CD32', // Red if less, Green if greater
               fontWeight: 'bold'
             }}
           >
