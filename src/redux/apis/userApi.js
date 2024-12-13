@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
-export const specificationApi = createApi({
-  reducerPath: 'specificationApi',
+export const userApi = createApi({
+  reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getAllClients: builder.query({
@@ -37,4 +37,4 @@ export const {
   useGetBranchesQuery,
   useGetBranchesByClientIDQuery,
   useGetStatesQuery
-} = specificationApi;
+} = userApi;

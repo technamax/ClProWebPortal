@@ -211,6 +211,7 @@ const InventoryItems = () => {
               ))}
             </TextField>
           </Grid>
+
           <Grid item xs={12} md={12}>
             <Divider color="#137a91" sx={{ height: 2, width: '100%', marginY: 2 }} />
           </Grid>
