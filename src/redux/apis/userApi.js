@@ -36,5 +36,6 @@ export const {
   useGetUsersByClientIDQuery,
   useGetBranchesQuery,
   useGetBranchesByClientIDQuery,
-  useGetStatesQuery
+  useGetStatesQuery,
+  useGetCitiesQuery
 } = userApi;

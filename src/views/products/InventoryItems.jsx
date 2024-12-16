@@ -39,7 +39,7 @@ const InventoryItems = () => {
 
     return {
       ...itemB, // Include all fields from rows
-      CurrentStock: matchingItem ? matchingItem.CurrentStock : 0 // Add CurrentStock, default to 0 if not found
+      CurrentStock: matchingItem ? matchingItem.CurrentStock : 0
     };
   });
 

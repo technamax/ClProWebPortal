@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // import axios from 'axios';
-import { Box, Tab, Card, Grid, Typography, TextField, Button, CircularProgress } from '@mui/material';
+import { Box, Tab, Card, Grid, Typography, TextField, Button, CircularProgress, MenuItem } from '@mui/material';
 // import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
@@ -16,7 +16,7 @@ import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import * as React from 'react';
 import ReuseableDataGrid from 'components/ReuseableDataGrid';
 
-import { useGetAllClientsQuery } from 'redux/apis/userApi';
+import { useGetAllClientsQuery, useGetStatesQuery, useGetCitiesQuery } from 'redux/apis/userApi';
 
 const Clients = () => {
   const [formData, setFormData] = useState({
@@ -50,9 +50,12 @@ const Clients = () => {
   };
   const [loading, setLoading] = useState(false);
   const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [rows, setRows] = useState([]);
 
   const { data: clients, refetch: refetchClients } = useGetAllClientsQuery();
+  const { data: statesData, refetch: refetchStatesData } = useGetStatesQuery();
+  const { data: citiesData, refetch: refetchCitiesData } = useGetCitiesQuery(formData.stateID, { skip: !formData.stateID });
   useEffect(() => {
     if (clients) {
       setRows(
@@ -63,15 +66,27 @@ const Clients = () => {
       );
     }
   }, [clients, refetchClients]);
-  // const rows = [
-  //   { id: 1, role: 'Admin', isActive: 'Yes', isMainRole: 'Yes', createdOn: '12/09/2022' },
-  //   { id: 2, role: 'Manager', isActive: 'No', isMainRole: 'No', createdOn: '12/09/2022' },
-  //   { id: 3, role: 'User', isActive: 'Yes', isMainRole: 'Yes', createdOn: '12/09/2022' },
-  //   { id: 4, role: 'Admin', isActive: 'Yes', isMainRole: 'Yes', createdOn: '12/09/2022' },
-  //   { id: 5, role: 'Manager', isActive: 'No', isMainRole: 'No', createdOn: '12/09/2022' },
-  //   { id: 6, role: 'User', isActive: 'Yes', isMainRole: 'Yes', createdOn: '12/09/2022' },
-  //   { id: 7, role: 'Admin', isActive: 'Yes', isMainRole: 'Yes', createdOn: '12/09/2022' }
-  // ];
+  useEffect(() => {
+    if (statesData) {
+      setStates(
+        statesData.result.map((row, index) => ({
+          id: index + 1,
+          ...row
+        }))
+      );
+    }
+  }, [statesData, refetchStatesData]);
+  useEffect(() => {
+    if (citiesData) {
+      setCities(
+        citiesData.result.map((row, index) => ({
+          id: index + 1,
+          ...row
+        }))
+      );
+    }
+  }, [citiesData, refetchCitiesData]);
+
   const columns = [
     { field: 'id', headerName: 'Sr.', flex: 0.1 },
     { field: 'clientID', headerName: 'ID', flex: 1 },
@@ -170,8 +185,8 @@ const Clients = () => {
                 // helperText={formErrors.brandId}
               >
                 {states.map((option) => (
-                  <MenuItem key={option.states} value={option.states}>
-                    {option.categoryName}
+                  <MenuItem key={option.id} value={option.stateID}>
+                    {option.stateName}
                   </MenuItem>
                 ))}
               </TextField>
@@ -188,9 +203,9 @@ const Clients = () => {
                 // error={!!formErrors.brandId}
                 // helperText={formErrors.brandId}
               >
-                {states.map((option) => (
-                  <MenuItem key={option.cityID} value={option.cityID}>
-                    {option.categoryName}
+                {cities.map((option) => (
+                  <MenuItem key={option.id} value={option.cityID}>
+                    {option.cityName}
                   </MenuItem>
                 ))}
               </TextField>
@@ -199,7 +214,7 @@ const Clients = () => {
               <TextField
                 fullWidth
                 select
-                label="Customer"
+                label="Customer Type"
                 name="customerType"
                 value={formData.customerType}
                 onChange={handleChange}
@@ -208,7 +223,7 @@ const Clients = () => {
                 // helperText={formErrors.brandId}
               >
                 {states.map((option) => (
-                  <MenuItem key={option.categoryID} value={option.categoryID}>
+                  <MenuItem key={option.id} value={option.categoryID}>
                     {option.categoryName}
                   </MenuItem>
                 ))}
@@ -227,7 +242,7 @@ const Clients = () => {
                 // helperText={formErrors.brandId}
               >
                 {states.map((option) => (
-                  <MenuItem key={option.role} value={option.role}>
+                  <MenuItem key={option.id} value={option.role}>
                     {option.categoryName}
                   </MenuItem>
                 ))}
